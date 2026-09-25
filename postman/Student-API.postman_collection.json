@@ -16,7 +16,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/auth/login"
             }
           },
           "response": []
@@ -32,7 +32,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/students/663020003"
             }
           },
           "response": []
@@ -43,7 +43,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/students/663020004"
             }
           },
           "response": []
@@ -54,7 +54,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/students/999999999"
             }
           },
           "response": []
@@ -70,7 +70,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/courses/CP322001"
             }
           },
           "response": []
@@ -81,7 +81,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/courses/CP323001"
             }
           },
           "response": []
@@ -92,7 +92,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/courses/CP322001"
             }
           },
           "response": []
@@ -108,7 +108,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/registrations"
             }
           },
           "response": []
@@ -119,7 +119,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/registrations"
             }
           },
           "response": []
@@ -130,7 +130,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{base_url}}/api/registrations"
             }
           },
           "response": []
