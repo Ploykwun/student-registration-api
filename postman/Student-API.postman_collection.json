@@ -1,737 +1,506 @@
-
 {
-	"info": {
-		"_postman_id": "ebbbc3ea-6ffa-4e97-9d03-4666a86f60d6",
-		"name": "Student Registration API v1.0",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "46862928"
-	},
-	"item": [
-		{
-			"name": "LoginTest",
-			"item": [
-				{
-					"name": "TC001-Login Success",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", () => {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"pm.test(\"Response time is less than 1000ms\", () => {",
-									"    pm.expect(pm.response.responseTime).to.be.below(1000);",
-									"});",
-									"pm.test(\"Response contains token\", () => {",
-									"    const json = pm.response.json();",
-									"    pm.expect(json.token).to.be.a(\"string\").and.not.empty;",
-									"    pm.environment.set(\"token\", json.token);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"username\": \"student\",\n  \"password\": \"123456\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/auth/login",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC002-Login Missing",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 400\", () => {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									"pm.test(\"Error is VALIDATION_ERROR\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"VALIDATION_ERROR\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"username\": \"student\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/auth/login",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC003-Login Wrong",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 401\", () => {",
-									"    pm.response.to.have.status(401);",
-									"});",
-									"pm.test(\"Error is INVALID_CREDENTIALS\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"INVALID_CREDENTIALS\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"username\": \"student\",\n  \"password\": \"wrongpass\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/auth/login",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Student Profile",
-			"item": [
-				{
-					"name": "TC004 - Get Student Success",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", () => {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"pm.test(\"Returns the requested student\", () => {",
-									"    const json = pm.response.json();",
-									"    pm.expect(json.studentId).to.eql(\"663020003\");",
-									"    pm.expect(json.status).to.eql(\"ACTIVE\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/students/663020003",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"students",
-								"663020003"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC005 - Get Student Not Found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 404\", () => {",
-									"    pm.response.to.have.status(404);",
-									"});",
-									"pm.test(\"Error is STUDENT_NOT_FOUND\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"STUDENT_NOT_FOUND\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/students/999999999",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"students",
-								"999999999"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Course Details",
-			"item": [
-				{
-					"name": "TC006 - Course Successful",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", () => {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"pm.test(\"Returns the requested course\", () => {",
-									"    const json = pm.response.json();",
-									"    pm.expect(json.courseId).to.eql(\"CP321001\");",
-									"    pm.expect(json.credits).to.eql(3);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/courses/CP321001",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"CP321001"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC007 - Course Wrong",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 404\", () => {",
-									"    pm.response.to.have.status(404);",
-									"});",
-									"pm.test(\"Error is COURSE_NOT_FOUND\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"COURSE_NOT_FOUND\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/courses/CP322003",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"CP322003"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC008 - Course Missing Token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 401\", () => {",
-									"    pm.response.to.have.status(401);",
-									"});",
-									"pm.test(\"Error is TOKEN_REQUIRED\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"TOKEN_REQUIRED\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/courses/CP321001",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"CP321001"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Registration",
-			"item": [
-				{
-					"name": "TC009 - Boundary 22 Accepted",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 201\", () => {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"pm.test(\"Total credits is exactly 22\", () => {",
-									"    pm.expect(pm.response.json().totalCredits).to.eql(22);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"studentId\": \"663020003\",\n  \"courseId\": \"CP321001\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/registrations",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"registrations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC016 - Registration Successful",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", () => {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"pm.test(\"Registration for CP321001 exists\", () => {",
-									"    const json = pm.response.json();",
-									"    pm.expect(json.registrations.map(r => r.courseId)).to.include(\"CP321001\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/registrations/663020003",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"registrations",
-								"663020003"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC010 - Over 22 Rejected",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 400\", () => {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									"pm.test(\"Error is CREDIT_LIMIT_EXCEEDED\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"CREDIT_LIMIT_EXCEEDED\");",
-									"});",
-									"pm.test(\"Attempted total is 23\", () => {",
-									"    pm.expect(pm.response.json().attemptedTotal).to.eql(23);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"studentId\": \"663020004\",\n  \"courseId\": \"CP321001\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/registrations",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"registrations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC011 - Student Inactive",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 400\", () => {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									"pm.test(\"Error is STUDENT_INACTIVE\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"STUDENT_INACTIVE\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"studentId\": \"663020002\",\n  \"courseId\": \"CP321001\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/registrations",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"registrations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC012 - Course Full",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 409\", () => {",
-									"    pm.response.to.have.status(409);",
-									"});",
-									"pm.test(\"Error is COURSE_FULL\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"COURSE_FULL\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"studentId\": \"663020001\",\n  \"courseId\": \"CP322001\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/registrations",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"registrations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC013 - Duplicate Registration",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 409\", () => {",
-									"    pm.response.to.have.status(409);",
-									"});",
-									"pm.test(\"Error is DUPLICATE_REGISTRATION\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"DUPLICATE_REGISTRATION\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"studentId\": \"663020001\",\n  \"courseId\": \"CP323001\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/registrations",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"registrations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC014 - Student Not Found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 404\", () => {",
-									"    pm.response.to.have.status(404);",
-									"});",
-									"pm.test(\"Error is STUDENT_NOT_FOUND\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"STUDENT_NOT_FOUND\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"studentId\": \"663029999\",\n  \"courseId\": \"CP321001\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/registrations",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"registrations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "TC015 - Course Not Found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 404\", () => {",
-									"    pm.response.to.have.status(404);",
-									"});",
-									"pm.test(\"Error is COURSE_NOT_FOUND\", () => {",
-									"    pm.expect(pm.response.json().error).to.eql(\"COURSE_NOT_FOUND\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"studentId\": \"663020001\",\n  \"courseId\": \"CP999999\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/registrations",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"registrations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Cancel Registration",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", () => {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"pm.test(\"Credits are restored\", () => {",
-									"    pm.expect(pm.response.json().totalCredits).to.eql(19);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/test/registrations/663020003/CP321001",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"test",
-								"registrations",
-								"663020003",
-								"CP321001"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	],
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{token}}",
-				"type": "string"
-			}
-		]
-	}
+  "info": {
+    "_postman_id": "5571d69f-8f18-43cf-bc8c-b0c2446ee1a8",
+    "name": "Student Registration API Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46863873"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "LoginTest",
+      "item": [
+        {
+          "name": "Tc01-login-success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response contains token\", () => {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.token).to.be.a(\"string\").and.not.empty;",
+                  "    pm.environment.set(\"token\", json.token);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"student\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Student active",
+      "item": [
+        {
+          "name": "Tc004_student_Active",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Student is ACTIVE\", () => {",
+                  "    pm.expect(pm.response.json().status).to.eql(\"ACTIVE\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/students/663020003",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "663020003"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tc005_student_Active",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Student is ACTIVE\", () => {",
+                  "    pm.expect(pm.response.json().status).to.eql(\"ACTIVE\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/students/663020004",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "663020004"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tc006_student_Inactive",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Student is INACTIVE\", () => {",
+                  "    pm.expect(pm.response.json().status).to.eql(\"INACTIVE\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/students/663020002",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "663020002"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tc006_student_NotFound",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", () => {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Error is STUDENT_NOT_FOUND\", () => {",
+                  "    pm.expect(pm.response.json().error).to.eql(\"STUDENT_NOT_FOUND\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/students/999999999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "students",
+                "999999999"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Course",
+      "item": [
+        {
+          "name": "Tc07-course-NotFound",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", () => {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Error is COURSE_NOT_FOUND\", () => {",
+                  "    pm.expect(pm.response.json().error).to.eql(\"COURSE_NOT_FOUND\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/courses/CP999999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "courses",
+                "CP999999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tc08-course-Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"courseId is CP322001\", () => {",
+                  "    pm.expect(pm.response.json().courseId).to.eql(\"CP322001\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/courses/CP322001",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "courses",
+                "CP322001"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tc09-course-Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"courseId is CP323001\", () => {",
+                  "    pm.expect(pm.response.json().courseId).to.eql(\"CP323001\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/courses/CP323001",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "courses",
+                "CP323001"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Student Registration",
+      "item": [
+        {
+          "name": "Tc05_student_Duplicate_Registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 409\", () => {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "pm.test(\"Error is DUPLICATE_REGISTRATION\", () => {",
+                  "    pm.expect(pm.response.json().error).to.eql(\"DUPLICATE_REGISTRATION\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"663020001\",\n  \"courseId\": \"CP323001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/registrations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tc_student_more22credit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", () => {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Error is CREDIT_LIMIT_EXCEEDED\", () => {",
+                  "    pm.expect(pm.response.json().error).to.eql(\"CREDIT_LIMIT_EXCEEDED\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"663020004\",\n  \"courseId\": \"CP323001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/registrations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tc_student_inactive_registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", () => {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Error is STUDENT_INACTIVE\", () => {",
+                  "    pm.expect(pm.response.json().error).to.eql(\"STUDENT_INACTIVE\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"663020002\",\n  \"courseId\": \"CP321001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/registrations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tc04_student_coursefull",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 409\", () => {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "pm.test(\"Error is COURSE_FULL\", () => {",
+                  "    pm.expect(pm.response.json().error).to.eql(\"COURSE_FULL\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"663020001\",\n  \"courseId\": \"CP322001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/registrations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
 }
