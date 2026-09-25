@@ -100,22 +100,6 @@
       ]
     },
     {
-      "name": "Student Result",
-      "item": [
-        {
-          "name": "New Request",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": ""
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
       "name": "Student Registration",
       "item": [
         {
